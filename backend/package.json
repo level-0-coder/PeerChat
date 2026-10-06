@@ -7,7 +7,8 @@
   "type": "module",
   "main": "index.mjs",
   "scripts": {
-    "test": "nodemon src/index.mjs"
+    "test": "nodemon src/index.mjs",
+    "dev": "node src/index.mjs"
   },
   "dependencies": {
     "dotenv": "^18.0.5",

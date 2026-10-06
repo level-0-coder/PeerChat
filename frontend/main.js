@@ -2,9 +2,16 @@ let localStream
 let remoteStream
 let peerConnection
 
-const BACKEND_URL = "ws://172.16.120.106:3000"
+const log = document.getElementById("log")
+
+const BACKEND_URL = "ws://10.173.15.68:3000"
 
 const ws = new WebSocket(BACKEND_URL)
+
+function print(message) {
+	console.log(message)
+	log.textContent += message + '\n'
+}
 
 ws.onopen = () => {
 	console.log("Connected to Web Socket server")
@@ -20,7 +27,7 @@ ws.onmessage = async (event) => {
 		ws.send(JSON.stringify(offer))
 	}
 	else if(message.type === "join") {
-		console.log(`Joining Error: ${message.msg}`)
+		print(`Joining Error: ${message.msg}`)
 	}
 	else if(message.type === "offer") {
 		const offer = message
@@ -30,21 +37,21 @@ ws.onmessage = async (event) => {
 	else if(message.type === "answer") {
 		const answer = message
 		await peerConnection.setRemoteDescription(answer)
-		console.log("Remote Description Set")
+		print("Remote Description Set")
 	}
 	else if(message.type === "candidate") {
-		console.log("Received candidate: ", message.candidate)
-		console.log("Peer connection: ", peerConnection)
+		print("Received candidate: ", message.candidate)
+		print("Peer connection: ", peerConnection)
 		await peerConnection.addIceCandidate(message.candidate)
 	}
 }
 
 ws.onerror = (error) => {
-	console.log("WebSocket Error:" + error)
+	print("WebSocket Error:" + error)
 }
 
 ws.onclose = () => {
-	console.log("Disconnected")
+	print("Disconnected")
 }
 
 const servers = {
@@ -63,11 +70,11 @@ let init = async () => {
 	connectBtn.onclick = async () => {
 		const roomId = document.getElementById("roomCode").value
 		if(!roomId) {
-			console.log("Enter room code")
+			print("Enter room code")
 			return
 		}
 		else if(roomId.length !== 6) {
-			console.log("Room code is of wrong length")
+			print("Room code is of wrong length")
 			return
 		}
 
@@ -79,7 +86,7 @@ let init = async () => {
 
 	const createBtn = document.getElementById("create")
 	createBtn.onclick = async () => {
-		console.log("sending create request")
+		print("sending create request")
 		ws.send(JSON.stringify({
 			type: "create"
 		}))
@@ -107,7 +114,7 @@ let createOffer = async () => {
 
 	peerConnection.onicecandidate = async (event) => {
 		if(event.candidate) {
-			console.log("New ICE candidate: ", event.candidate)
+			print("New ICE candidate: ", event.candidate)
 			ws.send(JSON.stringify({
 				type: "candidate",
 				candidate: event.candidate
@@ -117,7 +124,7 @@ let createOffer = async () => {
 
 	let offer = await peerConnection.createOffer()
 	await peerConnection.setLocalDescription(offer)
-	console.log("Local Description Set")
+	print("Local Description Set")
 
 	return offer
 }
@@ -141,7 +148,7 @@ let createAnswer = async (offer) => {
 
 	peerConnection.onicecandidate = async (event) => {
 		if(event.candidate) {
-			console.log("New ICE candidate: ", event.candidate)
+			print("New ICE candidate: ", event.candidate)
 			ws.send(JSON.stringify({
 				type: "candidate",
 				candidate: event.candidate

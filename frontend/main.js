@@ -4,13 +4,13 @@ let peerConnection
 
 const log = document.getElementById("log")
 
-const BACKEND_URL = "ws://10.173.15.68:3000"
+const BACKEND_URL = "wss://peer-chat-backend.vercel.app"
 
 const ws = new WebSocket(BACKEND_URL)
 
-function print(message) {
-	console.log(message)
-	log.textContent += message + '\n'
+function print(...messages) {
+	console.log(...messages)
+	log.textContent += messages.join(' ') + '\n'
 }
 
 ws.onopen = () => {

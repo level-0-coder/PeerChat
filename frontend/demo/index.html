@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>WebRTC P2P test</title>
+		<meta name="viewport" value="width=device-width, initial-scale=1.0" >
+		<link rel="stylesheet" href="main.css">
+	</head>
+	<body>
+		<h1>WebRTC P2P test</h1>
+		<button id="createOffer" >Create Offer</button>
+		<button id="createAnswer" >Create Answer</button>
+		<button id="connect" >Connect</button>
+
+		<h3>Local Description</h3>
+		<textarea id="local" rows="10" cols="80"></textarea>
+
+		<h3>Remote Description</h3>
+		<textarea id="remote" rows="10" cols="80"></textarea>
+						
+		<br><br>
+
+		<input id="message" placeholder="Message">
+		<button id="send">Send</button>
+
+		<pre id="log"></pre>
+	</body>
+	<script src="main.js"></script>
+</html>

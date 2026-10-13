@@ -1,0 +1,127 @@
+:root {
+    --bg: #0a0e1a;
+    --surface: #11182a;
+    --border: rgba(163, 148, 255, 0.25);
+    --purple: #a394ff;
+    --cyan: #6de0ff;
+    --text: #e8eaff;
+    --muted: #929bb5;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 40px;
+    background: var(--bg);
+    color: var(--text);
+    font-family: Inter, sans-serif;
+}
+
+h1 {
+    color: var(--purple);
+    margin-bottom: 28px;
+}
+
+h3 {
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 500;
+    margin: 28px 0 10px;
+}
+
+button {
+    padding: 10px 16px;
+    margin: 0 8px 8px 0;
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+}
+
+button:hover {
+    color: var(--cyan);
+    border-color: var(--cyan);
+}
+
+textarea,
+input {
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    font: inherit;
+    outline: none;
+}
+
+textarea {
+    display: block;
+    width: 100%;
+    max-width: 800px;
+    resize: vertical;
+}
+
+input {
+    width: min(400px, 100%);
+}
+
+textarea:focus,
+input:focus {
+    border-color: var(--purple);
+}
+
+textarea::placeholder,
+input::placeholder {
+    color: var(--muted);
+}
+
+#log {
+    margin-top: 24px;
+    padding: 16px;
+    min-height: 100px;
+    max-width: 800px;
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--cyan);
+    font: 13px/1.6 monospace;
+}
+
+@media (max-width: 600px) {
+    body {
+        padding: 24px 16px;
+    }
+}
+
+/* Firefox */
+textarea {
+    scrollbar-width: thin;
+    scrollbar-color: #6d5ce8 #11182a;
+}
+
+/* Chrome, Edge, and other WebKit browsers */
+textarea::-webkit-scrollbar {
+    width: 8px;
+}
+
+textarea::-webkit-scrollbar-track {
+    background: #11182a;
+    border-radius: 8px;
+}
+
+textarea::-webkit-scrollbar-thumb {
+    background: #6d5ce8;
+    border-radius: 8px;
+    border: 2px solid #11182a;
+}
+
+textarea::-webkit-scrollbar-thumb:hover {
+    background: #6de0ff;
+}

@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>PeerChat</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" >
+		<link rel="stylesheet" href="main.css">
+		<link rel="icon" type="image/png" href="/public/images/logo.png">
+
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" 	crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">	
+		<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+	</head>
+	<body>
+		<div class="background-div">
+			<div class="ellipse-one"></div>
+			<div class="ellipse-two"></div>
+		</div>
+		<header>
+			<div class="header-container">
+				<div class="header-left">
+					<a href="/" class="brand">
+						<img id="logo" src="/public/images/logo.png" alt="PeerChat Brand Logo" />
+						<span class="brand-name">Peer <span>Chat</span></span>
+					</a>
+				</div>
+				<div class="header-right" id="header-right">
+					<span class="material-symbols-outlined room-icon">meeting_room</span>
+					<p id="roomId"></p>
+					<span class="material-symbols-outlined copy-icon" id="copy-icon">content_copy</span>
+				</div>
+			</div>
+		</header>
+		<main>
+			<div id="videos">
+				<video class="video-player" id="user-1" autoplay playsinline></video>
+				<video class="video-player" id="user-2" autoplay playsinline></video>
+			</div>
+			<div class="action-buttons">
+				<div id="end-btn">
+					<span class="material-symbols-outlined">call_end</span>					
+				</div>
+				<div id="video-btn">
+					<span class="material-symbols-outlined">videocam</span>					
+				</div>
+				<div id="mic-btn">
+					<span class="material-symbols-outlined">mic</span>					
+				</div>
+			</div>
+			<div class="legacy">
+				<input id="roomCode" type="text" placeholder="Enter the Room code">
+				<button id="connect">Connect</button>
+				<button id="create">Create</button>
+				<pre id="log"></pre>
+			</div>
+		</main>
+		<div id="notification">
+			<span class="material-symbols-outlined" id="close-notification">close</span>
+			<p id="notification-text"></p>
+		</div>
+	</body>
+	<script src="main.js"></script>
+</html>

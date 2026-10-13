@@ -410,3 +410,27 @@ videoBtn.addEventListener('click', async (event) => {
 		console.error('Could not enable camera:', error)
 	}
 })
+
+micBtn.addEventListener('click', async (event) => {
+	try{
+		const audioTrack = localStream.getAudioTracks()[0]
+
+		if(audioTrack) {
+			audioTrack.enabled = !audioTrack.enabled
+		}
+		else {
+			const audioStream = await navigator.mediaDevices.getUserMedia({audio: true})
+			const newAudioTrack = audioStream.getAudioTracks()[0]
+			localStream.addTrack(newAudioTrack)
+
+			if(peerConnection) {
+				peerConnection.addTrack(newAudioTrack, localStream)
+
+				const offer = await createOffer()
+				ws.send(JSON.stringify(offer))
+			}
+		}
+	} catch (error) {
+		console.error('Could not enable camera:', error)
+	}
+})

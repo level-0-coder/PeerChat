@@ -1,8 +1,15 @@
 {
-  "routes" : [
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "outputDirectory": ".",
+  "cleanUrls": true,
+  "rewrites": [
     {
-      "src": "/",
-      "dest": "/index.html"
+      "source": "/room",
+      "destination": "/room/index.html"
+    },
+    {
+      "source": "/demo",
+      "destination": "/demo/index.html"
     }
   ]
 }

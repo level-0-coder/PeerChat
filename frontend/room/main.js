@@ -383,7 +383,7 @@ video1.addEventListener('pointerup', (event) => {
 	video1.style.transition = 'all 0.2s ease'
 })
 
-video1.addEventListener('pointerup', (event) => {
+video1.addEventListener('pointercancel', (event) => {
 	isDragging = false
 	video1.style.transition = 'all 0.2s ease'
 })
@@ -404,13 +404,13 @@ videoBtn.addEventListener('click', async (event) => {
 			const videoStream = await navigator.mediaDevices.getUserMedia({video: true})
 			const newVideoTrack = videoStream.getVideoTracks()[0]
 			localStream.addTrack(newVideoTrack)
+			videoIcon.textContent = 'videocam'
 
 			if(peerConnection) {
 				peerConnection.addTrack(newVideoTrack, localStream)
 
 				const offer = await createOffer()
 				ws.send(JSON.stringify(offer))
-				videoIcon.textContent = 'videocam'
 			}
 		}
 	} catch (error) {
@@ -430,17 +430,17 @@ micBtn.addEventListener('click', async (event) => {
 			const audioStream = await navigator.mediaDevices.getUserMedia({audio: true})
 			const newAudioTrack = audioStream.getAudioTracks()[0]
 			localStream.addTrack(newAudioTrack)
+			micIcon.textContent = 'mic'
 
 			if(peerConnection) {
 				peerConnection.addTrack(newAudioTrack, localStream)
 
 				const offer = await createOffer()
 				ws.send(JSON.stringify(offer))
-				micIcon.textContent = 'mic'
 			}
 
 		}
 	} catch (error) {
-		console.error('Could not enable camera:', error)
+		console.error('Could not enable microphone:', error)
 	}
 })

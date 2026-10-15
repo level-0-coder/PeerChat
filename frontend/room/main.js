@@ -119,10 +119,10 @@ ws.onmessage = async (event) => {
 	}
 	else if(message.type === "candidate") {
 
-		notify('DEFAULT', 'Peer has entered the room')
+		// notify('DEFAULT', 'Peer has entered the room')
 
-		video1.classList.add('pip-player')
-		// video1.style.aspectRatio = `${video1.videoWidth} / ${video1.videoHeight}`
+		// video1.classList.add('pip-player')
+		// // video1.style.aspectRatio = `${video1.videoWidth} / ${video1.videoHeight}`
 
 
 		print("Received candidate: ", message.candidate)
@@ -165,6 +165,10 @@ ws.onclose = () => {
 }
 
 video2.addEventListener('loadedmetadata', (event) => {
+	notify('DEFAULT', 'Peer has entered the room')
+
+	video1.classList.add('pip-player')
+	// video1.style.aspectRatio = `${video1.videoWidth} / ${video1.videoHeight}`
 	video2.style.display = 'block'
 })
 
@@ -237,26 +241,26 @@ let init = async () => {
 	// createOffer()
 }
 
-// from device A
-let createOffer = async () => {
-	peerConnection = new RTCPeerConnection(servers)
+// create a new peerConnection
+let createPeerConnection = async () => {
+	let pc = new RTCPeerConnection(servers)
 
 	remoteStream = new MediaStream()
 	video2.srcObject = remoteStream
 
 	if(localStream) {
 		localStream.getTracks().forEach((track) => {
-			peerConnection.addTrack(track, localStream)
+			pc.addTrack(track, localStream)
 		})
 	}
 
-	peerConnection.ontrack = (event) => {
+	pc.ontrack = (event) => {
 		event.streams[0].getTracks().forEach((track) => {
 			remoteStream.addTrack(track)
 		})
 	}
 
-	peerConnection.onicecandidate = async (event) => {
+	pc.onicecandidate = async (event) => {
 		if(event.candidate) {
 			print("New ICE candidate: ", event.candidate)
 			ws.send(JSON.stringify({
@@ -266,16 +270,22 @@ let createOffer = async () => {
 		}
 	}
 
-	peerConnection.onnegotiationneeded = async (event) => {
+	pc.onnegotiationneeded = async (event) => {
 		if(!negotiated) return
 		try {
-			const offer = await peerConnection.createOffer()
-			await peerConnection.setLocalDescription(offer)
-			ws.send(JSON.stringify(peerConnection.localDescription))
+			const offer = await pc.createOffer()
+			await pc.setLocalDescription(offer)
+			ws.send(JSON.stringify(pc.localDescription))
 		} catch (error) {
 			print('Renegotiation failed:', error)
 		}
 	}
+
+	return pc
+}
+// from device A
+let createOffer = async () => {
+	peerConnection = createPeerConnection()
 
 	let offer = await peerConnection.createOffer()
 	await peerConnection.setLocalDescription(offer)
@@ -286,43 +296,7 @@ let createOffer = async () => {
 
 // from device B
 let createAnswer = async (offer) => {
-	peerConnection = new RTCPeerConnection(servers)
-
-	remoteStream = new MediaStream()
-	video2.srcObject = remoteStream
-
-	if(localStream) {
-		localStream.getTracks().forEach((track) => {
-			peerConnection.addTrack(track, localStream)
-		})
-	}
-
-	peerConnection.ontrack = (event) => {
-		event.streams[0].getTracks().forEach((track) => {
-			remoteStream.addTrack(track)
-		})
-	}
-
-	peerConnection.onicecandidate = async (event) => {
-		if(event.candidate) {
-			print("New ICE candidate: ", event.candidate)
-			ws.send(JSON.stringify({
-				type: "candidate",
-				candidate: event.candidate
-			}))
-		}
-	}
-
-	peerConnection.onnegotiationneeded = async (event) => {
-		if(!negotiated) return
-		try {
-			const offer = await peerConnection.createOffer()
-			await peerConnection.setLocalDescription(offer)
-			ws.send(JSON.stringify(peerConnection.localDescription))
-		} catch (error) {
-			print('Renegotiation failed:', error)
-		}
-	}
+	if(!peerConnection) peerConnection = createPeerConnection()
 
 	negotiated = true
 

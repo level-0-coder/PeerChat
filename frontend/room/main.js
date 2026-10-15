@@ -14,8 +14,12 @@ const notificationText = document.getElementById("notification-text")
 const closeNotification = document.getElementById("close-notification")
 
 const endBtn = document.getElementById('end-btn')
+
 const videoBtn = document.getElementById('video-btn')
+const videoIcon = videoBtn.querySelector('span')
+
 const micBtn = document.getElementById('mic-btn')
+const micIcon = micBtn.querySelector('span')
 
 const BACKEND_URL = "wss://peer-chat-backend.vercel.app"
 
@@ -393,6 +397,7 @@ videoBtn.addEventListener('click', async (event) => {
 
 		if(videoTrack) {
 			videoTrack.enabled = !videoTrack.enabled
+			videoIcon.textContent = videoTrack.enabled ? 'videocam' : 'videocam_off'
 		}
 		else {
 			const videoStream = await navigator.mediaDevices.getUserMedia({video: true})
@@ -404,6 +409,7 @@ videoBtn.addEventListener('click', async (event) => {
 
 				const offer = await createOffer()
 				ws.send(JSON.stringify(offer))
+				videoIcon.textContent = 'videocam'
 			}
 		}
 	} catch (error) {
@@ -417,6 +423,7 @@ micBtn.addEventListener('click', async (event) => {
 
 		if(audioTrack) {
 			audioTrack.enabled = !audioTrack.enabled
+			micIcon.textContent = audioTrack.enabled ? 'mic' : 'mic_off'
 		}
 		else {
 			const audioStream = await navigator.mediaDevices.getUserMedia({audio: true})
@@ -428,7 +435,9 @@ micBtn.addEventListener('click', async (event) => {
 
 				const offer = await createOffer()
 				ws.send(JSON.stringify(offer))
+				micIcon.textContent = 'mic'
 			}
+
 		}
 	} catch (error) {
 		console.error('Could not enable camera:', error)

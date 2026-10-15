@@ -64,6 +64,7 @@ main {
 	z-index: 50;
 	cursor: grab;
 	width: auto;
+	touch-action: none;
 }
 
 .pip-player:active {

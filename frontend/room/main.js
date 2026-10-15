@@ -195,6 +195,7 @@ let init = async () => {
 	try {
 		localStream = await navigator.mediaDevices.getUserMedia({video: true, audio: false})
 		video1.srcObject = localStream
+		videoIcon.textContent = 'videocam'
 	} catch (error) {
 		print("could not access camera:", error.message)
 		localStream = new MediaStream()

@@ -271,9 +271,7 @@ let createOffer = async () => {
 		try {
 			const offer = await peerConnection.createOffer()
 			await peerConnection.setLocalDescription(offer)
-			ws.send(JSON.stringify({
-				peerConnection.localDescription
-			}))
+			ws.send(JSON.stringify(pc.localDescription))
 		} catch (error) {
 			print('Renegotiation failed:', error)
 		}

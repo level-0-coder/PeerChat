@@ -3,6 +3,7 @@ const params = new URLSearchParams(window.location.search)
 let localStream
 let remoteStream
 let peerConnection
+let negotiated = false
 let roomId = params.get('id')
 
 const video1 = document.getElementById('user-1')
@@ -113,6 +114,7 @@ ws.onmessage = async (event) => {
 	else if(message.type === "answer") {
 		const answer = message
 		await peerConnection.setRemoteDescription(answer)
+		negotiated = true
 		print("Remote Description Set")
 	}
 	else if(message.type === "candidate") {
@@ -143,6 +145,10 @@ ws.onmessage = async (event) => {
 
 			video1.removeEventListener('transitionend', handler)
 		})
+
+		peerConnection?.close()
+		peerConnection = null
+		negotiated = false
 	}
 }
 
@@ -260,6 +266,19 @@ let createOffer = async () => {
 		}
 	}
 
+	peerConnection.onnegotiationneeded = async (event) => {
+		if(!negotiated) return
+		try {
+			const offer = await pc.createOffer()
+			await pc.setLocalDescription(offer)
+			ws.send(JSON.stringify({
+				pc.localDescription
+			}))
+		} catch (error) {
+			print('Renegotiation failed:', error)
+		}
+	}
+
 	let offer = await peerConnection.createOffer()
 	await peerConnection.setLocalDescription(offer)
 	print("Local Description Set")
@@ -293,6 +312,19 @@ let createAnswer = async (offer) => {
 				type: "candidate",
 				candidate: event.candidate
 			}))
+		}
+	}
+
+	peerConnection.onnegotiationneeded = async (event) => {
+		if(!negotiated) return
+		try {
+			const offer = await pc.createOffer()
+			await pc.setLocalDescription(offer)
+			ws.send(JSON.stringify({
+				pc.localDescription
+			}))
+		} catch (error) {
+			print('Renegotiation failed:', error)
 		}
 	}
 
@@ -409,8 +441,8 @@ videoBtn.addEventListener('click', async (event) => {
 			if(peerConnection) {
 				peerConnection.addTrack(newVideoTrack, localStream)
 
-				const offer = await createOffer()
-				ws.send(JSON.stringify(offer))
+				// const offer = await createOffer()
+				// ws.send(JSON.stringify(offer))
 			}
 		}
 	} catch (error) {
@@ -435,8 +467,8 @@ micBtn.addEventListener('click', async (event) => {
 			if(peerConnection) {
 				peerConnection.addTrack(newAudioTrack, localStream)
 
-				const offer = await createOffer()
-				ws.send(JSON.stringify(offer))
+				// const offer = await createOffer()
+				// ws.send(JSON.stringify(offer))
 			}
 
 		}

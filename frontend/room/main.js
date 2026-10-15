@@ -285,7 +285,7 @@ let createPeerConnection = async () => {
 }
 // from device A
 let createOffer = async () => {
-	peerConnection = createPeerConnection()
+	peerConnection = await createPeerConnection()
 
 	let offer = await peerConnection.createOffer()
 	await peerConnection.setLocalDescription(offer)
@@ -296,7 +296,7 @@ let createOffer = async () => {
 
 // from device B
 let createAnswer = async (offer) => {
-	if(!peerConnection) peerConnection = createPeerConnection()
+	if(!peerConnection) peerConnection = await createPeerConnection()
 
 	negotiated = true
 

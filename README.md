@@ -4,7 +4,7 @@ A peer-to-peer, one-on-one video chat app. Media flows directly between browsers
 
 **Live demo:** https://peerchat-frontend-iota.vercel.app/
 
-![PeerChat demo](docs/demo.mp4)
+![PeerChat demo](docs/demo.gif)
 
 ## Features
 

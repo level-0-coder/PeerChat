@@ -324,6 +324,8 @@ let createAnswer = async (offer) => {
 		}
 	}
 
+	negotiated = true
+
 	await peerConnection.setRemoteDescription(offer)
 
 	const answer = await peerConnection.createAnswer()

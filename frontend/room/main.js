@@ -269,10 +269,10 @@ let createOffer = async () => {
 	peerConnection.onnegotiationneeded = async (event) => {
 		if(!negotiated) return
 		try {
-			const offer = await pc.createOffer()
-			await pc.setLocalDescription(offer)
+			const offer = await peerConnection.createOffer()
+			await peerConnection.setLocalDescription(offer)
 			ws.send(JSON.stringify({
-				pc.localDescription
+				peerConnection.localDescription
 			}))
 		} catch (error) {
 			print('Renegotiation failed:', error)
@@ -318,8 +318,8 @@ let createAnswer = async (offer) => {
 	peerConnection.onnegotiationneeded = async (event) => {
 		if(!negotiated) return
 		try {
-			const offer = await pc.createOffer()
-			await pc.setLocalDescription(offer)
+			const offer = await peerConnection.createOffer()
+			await peerConnection.setLocalDescription(offer)
 			ws.send(JSON.stringify({
 				pc.localDescription
 			}))
@@ -476,3 +476,7 @@ micBtn.addEventListener('click', async (event) => {
 		console.error('Could not enable microphone:', error)
 	}
 })
+
+
+// createOffer() creates new RTCPeerConnection along with the required offer is created
+// peerConnection.createOffer() is built-in method which creates offer for the existing RTCPeerConnection
